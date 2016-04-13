@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method="post" class="pure-form">
+      <label for="course">Course</label>
+        <select id="course">
+            <option>2230</option>
+            <option>2240</option>
+        </select>
+      <label for="assignment">Assignment</label>
+      <input type="text" id="assignment" ></input>
+      <input class="pure-button" type="submit" value="Create">
+    </form>
+  {% endif %}
+  <ul>
+  {% for entry in entries %}
+    <li><h4>{{ entry.title }}</h4>{{ entry.text|safe }}
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,37 @@
+.flash {
+  margin: 1em;
+  border: 1px solid #eee;
+  padding: 1.1429em;
+  background: rgb(250, 250, 250);
+}
+
+.menu-list {
+  float: right;
+}
+
+.home-menu {
+  background: #9B26AF;
+  padding: 10px;
+}
+
+.home-menu a {
+  color: white;
+}
+
+.pure-menu-link:hover {
+  background: #7A1EA1;
+}
+
+.metanav        { 
+  text-align: right; 
+  font-size: 0.8em; 
+  padding: 0.3em;
+  margin-bottom: 1em;
+  background: #fafafa;
+}
+
+.page {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 70px;
+}
