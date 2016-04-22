@@ -37,7 +37,7 @@
 <!-- prefix page with a flash component -->
 <div class=page>
   {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
+    <div class="well well-sm">{{ message }}</div>
   {% endfor %}
 
   {% block body %}{% endblock %}

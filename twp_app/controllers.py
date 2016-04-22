@@ -1,11 +1,7 @@
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash, jsonify
-from service import TwpService
+from flask import Blueprint, request, render_template, \
+flash, g, session, redirect, url_for, jsonify
 
-app = Flask(__name__)
-app.config.from_object('twpwebconfig')
-
-twp_service = TwpService();
+from twp_app import app, twp_service
 
 @app.route('/')
 def index():
@@ -22,13 +18,6 @@ def index():
   bakups = twp_service.get_bakups()
   repos = twp_service.get_repositories()
   return render_template('index.html', entries = entries, bakups = bakups, repos = repos)
-
-
-@app.route('/bak', methods=['GET'])
-def bakups():
-  baks = twp_service.get_bakups()
-  print baks
-  return jsonify(baks)
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -56,7 +45,7 @@ def login():
   # ensure we return the correct value
   if logged_in:
       session['logged_in'] = True
-      flash('You were logged in')
+      flash('Successfully logged in!')
       return redirect(url_for('index'))
   elif logged_in is False:
     error = 'Invalid credentials'
@@ -68,7 +57,3 @@ def logout():
   session.pop('logged_in', None)
   flash('You were logged out')
   return redirect(url_for('index'))
-
-@app.before_first_request
-def check_location_on_startup():
-  print 'Assert that the environment we are in will allow us to work'
