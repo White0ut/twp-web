@@ -1,9 +1,11 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, jsonify
+from service import TwpService
 
 app = Flask(__name__)
 app.config.from_object('twpwebconfig')
 
+twp_service = TwpService();
 
 @app.route('/')
 def index():
@@ -17,8 +19,16 @@ def index():
       'text': '35 students'
     }
   ]
-  return render_template('index.html', entries = entries)
+  bakups = twp_service.get_bakups()
+  repos = twp_service.get_repositories()
+  return render_template('index.html', entries = entries, bakups = bakups, repos = repos)
 
+
+@app.route('/bak', methods=['GET'])
+def bakups():
+  baks = twp_service.get_bakups()
+  print baks
+  return jsonify(baks)
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -61,4 +71,4 @@ def logout():
 
 @app.before_first_request
 def check_location_on_startup():
-  print 'Asserting that things are where we expect them'
+  print 'Assert that the environment we are in will allow us to work'
