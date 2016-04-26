@@ -1,3 +1,22 @@
+.sub-panel {
+  padding-left: 1em;
+}
+
+.assignment-container {
+  padding: 1em;
+}
+
+.assignment {
+  width: inherit;
+}
+
+.borderless {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
 .flash {
   margin: 1em;
   border: 1px solid #eee;

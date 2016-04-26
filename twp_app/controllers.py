@@ -1,23 +1,15 @@
 from flask import Blueprint, request, render_template, \
-flash, g, session, redirect, url_for, jsonify
+flash, g, session, redirect, url_for, jsonify, send_file
 
-from twp_app import app, twp_service
+from twp_app import app, service
+
+twp_service = service.TwpService()
 
 @app.route('/')
 def index():
-  entries = [
-    {
-      'title': 'CS2240',
-      'text': '20 students'
-    },
-    {
-      'title': 'CS2230',
-      'text': '35 students'
-    }
-  ]
   bakups = twp_service.get_bakups()
   repos = twp_service.get_repositories()
-  return render_template('index.html', entries = entries, bakups = bakups, repos = repos)
+  return render_template('index.html', bakups = bakups, repos = repos)
 
 @app.route('/add', methods=['POST'])
 def add_entry():

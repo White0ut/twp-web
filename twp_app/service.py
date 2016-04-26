@@ -1,22 +1,45 @@
+import os
+
+from twp_app import app
+
 class TwpService():
 
   def __init__(self):
-    pass
+    self.STUDENTS = 'students'
+    self.ASSIGNMENTS = 'assignments'
+
+  def __last_el(self, val):
+    val = val.rstrip(os.path.sep)
+    v = val.split(os.path.sep)[-1]
+    return val.split(os.path.sep)[-1]
 
   def get_repositories(self):
-    return {
-      '2250': [
-        'kendrick.d.cline',
-        'david.t.montgomery',
-        'adam.l.banks'
-      ],
-      '2230': [
-        'test.a.test',
-        'test.b.test',
-        'test.c.test',
-        'test.d.test'
-      ]
-    }
+    repos = {}
+    for root, dirs, files in os.walk(app.config['TWP_REPOS']):
+      if root == app.config['TWP_REPOS']:
+        dirs.remove('gitolite-admin.git')
+        for d in dirs:
+          repos[d] = {}
+          repos[d][self.STUDENTS] = []
+          repos[d][self.ASSIGNMENTS] = []
+      elif self.__last_el(root) in repos:
+        r_el = self.__last_el(root)
+        for d in dirs:
+          if d.endswith('.git'):
+            repos[r_el][self.ASSIGNMENTS].append(d[:-4])
+          else:
+            repos[r_el][self.STUDENTS].append(d)
+        del dirs[:]
+      
+      # Remove .git directories because we are not interested in their contents
+      nd = []
+      for directory in dirs:
+        if directory.endswith('.git'):
+          nd.append(directory)
+      for n in nd:
+        dirs.remove(n)
+
+    return repos
 
   def get_bakups(self):
     return {

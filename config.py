@@ -10,7 +10,9 @@ ACCOUNTS = {
 import os
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-TWP_HOME = os.path.abspath('../')
+TWP_HOME = os.path.abspath('..')
+TWP_BAKUPS = os.path.join(TWP_HOME, 'bak')
+TWP_REPOS = os.path.join(TWP_HOME, 'repositories')
 
 THREADS_PER_PAGE = 2
 

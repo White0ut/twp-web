@@ -14,24 +14,45 @@
     </form>
   -->
 
-    <!-- display repositories -->
+    <!-- repositories -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">Courses</h4>
       </div>
 
-      {% for course, members in repos.iteritems() %}
+      {% for course, attr in repos.iteritems() %}
         <div class="panel-heading">
           <h5 class="panel-title">
             <a data-toggle="collapse" href="#collapse-{{course}}">{{ course }}</a>
           </h5>
         </div>
         <div id="collapse-{{course}}" class="panel-collapse collapse">
-          <ul class="list-group">
-          {% for member in members %}
-            <li class="list-group-item">{{ member }}</li>
-          {% endfor %}
-          </ul>
+          
+          <!-- Assignments -->
+         <div class="assignment-container container-fluid">
+            <div class="row">
+            {% for assignment in attr.assignments  %}
+              <div class="col-xs-1 assignment">{{ assignment }}</div>
+            {% endfor %}
+            </div>
+          </div>
+
+          <!-- Students -->
+          <div class="panel-heading">
+            <h6 class="panel-title">
+              <a data-toggle="collapse" href="#collapse-{{ course }}-students">Students</a>
+            </h6>
+          </div>
+          <div id="collapse-{{ course }}-students" class="panel-collapse collapse">
+            <ul class="list-group">
+            {% for student in attr.students %}
+              <li class="list-group-item borderless">{{ student.replace('.', ' ').title() }}</li>
+            {% else %}
+              <li class="list-group-item borderless">None</li>
+            {% endfor %}
+            </ul>
+          </div>
+
         </div>
       {% endfor %}
 
