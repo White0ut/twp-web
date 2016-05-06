@@ -1,6 +1,6 @@
+import os
 from flask import Blueprint, request, render_template, \
-flash, g, session, redirect, url_for, jsonify, send_file
-
+flash, g, session, redirect, url_for, jsonify, send_file, abort
 from twp_app import app, service
 
 twp_service = service.TwpService()
@@ -11,12 +11,12 @@ def index():
   repos = twp_service.get_repositories()
   return render_template('index.html', bakups = bakups, repos = repos)
 
-@app.route('/add', methods=['POST'])
-def add_entry():
-  if not session.get('logged_in'):
-    abort(401)
-  flash('New entry was successfully posted')
-  return redirect(url_for('index'))
+@app.route('/download', defaults={'filename', ''})
+@app.route('/download/<path:filename>')
+def download(filename):
+  if '..' in filename or filename.startswith('/'):
+    abort(404)
+  return send_file(os.path.join(app.config['TWP_BAKUPS'], filename))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
