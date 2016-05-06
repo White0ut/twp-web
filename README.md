@@ -7,10 +7,13 @@ The webapp is here to ease the process of viewing the state of the repositories,
 
 
 ## TODO:
-* List archived courses.
-* Download a students work for a course.
-* Archive a course.
-* Begin a course.
-* Check the environment to ensure that repositories, bakups, etc. are in their expected directories.
-* OAuth
+- [x] Simple auth for sensitive data.
+- [x] List active repositories.
+- [ ] List archived courses.
+- [ ] Download a students work for a course.
+- [ ] Archive a course.
+- [ ] Begin a course.
+- [ ] Display an assignment as graded if a file matching \Graded*.pdf\ exists in the repo.
+- [ ] Check the environment to ensure that repositories, bakups, etc. are in their expected directories.
+- [ ] OAuth
 
