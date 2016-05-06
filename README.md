@@ -5,12 +5,20 @@ Students pull assignments and push their work. Their work is then be pulled by a
 
 The webapp is here to ease the process of viewing the state of the repositories, creating new assignments, and archiving semesters worth of work to "restart" for another semester.
 
+## How to
+
+To run the server, execute the following.
+`python run.py`
+
+This runs the server on port `5000`.
+To add a user account edit the `config.py` with a new user entry.
+
 
 ## TODO:
 - [x] Simple auth for sensitive data.
 - [x] List active repositories.
 - [ ] List archived courses.
-- [ ] Download a students work for a course.
+- [ ] Download a students' work for a course.
 - [ ] Archive a course.
 - [ ] Begin a course.
 - [ ] Display an assignment as graded if a file matching \Graded*.pdf\ exists in the repo.
