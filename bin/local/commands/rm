@@ -1,0 +1,15 @@
+#!/bin/sh
+
+die() { echo "$@" >&2; exit 1; }
+usage() { echo 'ssh git@host rm <repo>'; exit 1; }
+[ -z "$1" ] && usage
+[ "$1" = "-h" ] && usage
+[ -z "$GL_USER" ] && die GL_USER not set
+
+repo=$1; shift
+
+gitolite access -q "$repo" $GL_USER W any || die "'$repo' does not exist or you do not have write access to it."
+
+rm -rf "$GL_REPO_BASE/$repo.git"
+
+echo "'$repo' has been deleted."

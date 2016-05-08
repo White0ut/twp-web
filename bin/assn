@@ -1,0 +1,142 @@
+#!/bin/bash
+
+# assn - Manage student assignment repos.
+# 
+# All commands work on a class of repositories, designated by a class and
+# assignment pair, corresponding to a path into ~/repositories, ~/clones, and
+# ~/tests
+#
+# e.g. to clone all assignment one repositories from 2230, you might run:
+# $ assn clone 2230 a1
+
+shopt -s extglob
+
+eval set -- $(getopt fb "$@")
+
+FORCE=
+BACKGROUND=
+
+while true; do
+	case $1 in
+		-f) FORCE=1;;
+		-b) BACKGROUND=1;;
+		--) shift; break;;
+		*) exit 1;;
+	esac
+	shift
+done
+
+if [ "$#" -lt "2" ]; then
+	echo "Usage: $0 [-f] [-b] command class assn [student...]"
+	echo ""
+	echo "Manage student assignment repositories."
+	echo ""
+	echo "Positional arguments:"
+	echo -e "\tcommand: action to be performed (see available commands below)"
+	echo -e "\tclass: class number (e.g. 2230)"
+	echo -e "\tassn: assignment repo name (e.g. a0)"
+	echo -e "\tstudent...: optional list of students to act on; if not supplied, all is assumed"
+	echo ""
+	echo "Available commands:"
+	echo -e "\tclone: clone from ~/repositories to ~/clones"
+	echo -e "\ttest: run tests from ~/tests in ~/clones"
+	echo -e "\tpush: push back from ~/clones to ~/repositories"
+  echo -e "\tarchive: zip up student work from ~/repositories into ~/bak, only requires a course"
+	echo ""
+	echo "Available options:"
+	echo -e "\t-f: force clones"
+	echo -e "\t-b: background tests (writing output to test.log)"
+	exit
+fi
+
+CMD="$1"
+CLASS="$2"
+ASSN="$3"
+students="${@:4}"
+DATE=`date +%Y-%m-%d`
+
+get_cloned_students() {
+	if [[ -z "$students" ]]; then
+		pushd ~/clones/"$CLASS"/"$ASSN" >/dev/null
+		students=$(echo *)
+		popd >/dev/null
+	fi
+}
+
+case "$CMD" in
+'clone')
+	if [[ -z "$students" ]]; then
+		pushd ~/repositories/"$CLASS" >/dev/null
+		students=$(echo !(*.git))
+		popd >/dev/null
+	fi
+	for student in $students; do
+		from=~/repositories/"$CLASS"/"$student"/"$ASSN".git
+		mkdir -p ~/clones/"$CLASS"/"$ASSN"
+		to=~/clones/"$CLASS"/"$ASSN"/"$student"
+		[[ -n "$FORCE" ]] && rm -rf "$to"
+		[[ -e "$from" ]] && git clone "$from" "$to"
+	done
+	;;
+'archive')
+  pushd ~/repos/"$CLASS" >/dev/null
+  assignments=$(echo *.git)
+  students=$(echo !(*.git))
+  popd >/dev/null
+  for assignment in $assignments; do
+    ASSN=${assignment%.git}
+
+    # Archive the assignment
+    from=~/repos/"$CLASS"/"$assignment"
+    to=~/bak/"$DATE"/"$CLASS"/"$ASSN".tmp
+    mkdir -p ~/bak/"$DATE"/"$CLASS"
+    mkdir -p "$to"
+    zip_assn=~/bak/"$DATE"/"$CLASS"/"$ASSN".tar.gz
+    git clone -q "$from" "$to"
+    [[ -e "$to" ]] && tar -zcf "$zip_assn" -C "$to" .
+    [[ -e "$to" ]] && rm -rf "$to"
+
+    # Archive each student's work
+    for student in $students; do
+      from=~/repos/"$CLASS"/"$student"/"$ASSN".git
+      mkdir -p ~/bak/"$DATE"/"$CLASS"/"$ASSN"
+      to=~/bak/"$DATE"/"$CLASS"/"$ASSN"/"$student"
+      [[ -e "$from" ]] && git clone -q "$from" "$to" 2>/dev/null
+      [[ -e "$to" ]] && tar -zcf "$to".tar.gz -C "$to" .
+      [[ -e "$to" ]] && rm -rf "$to"
+    done
+  done
+  ;;
+'test')
+	get_cloned_students
+	for student in $students; do
+		repo=~/clones/"$CLASS"/"$ASSN"/"$student"
+		test_=~/tests/"$CLASS"/"$ASSN"
+		if [[ -d "$repo" && -x "$test_" ]]; then
+			pushd $repo
+				if [[ -n "$BACKGROUND" ]]; then
+					$test_ >test.log 2>&1 &
+				else
+					$test_
+				fi
+			popd
+		fi
+	done
+	;;
+'push')
+	get_cloned_students
+	for student in $students; do
+		pushd ~/clones/"$CLASS"/"$ASSN"/"$student" >/dev/null
+		git add -A :/
+		git commit -m "review"
+		gitolite push -f origin master
+		popd >/dev/null
+	done
+	;;
+*)
+	echo "Unknown command: ${CMD}"
+	exit 1
+	;;
+esac
+
+exit 0

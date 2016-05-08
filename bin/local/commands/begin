@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# Special version of the standard fork command designed for students to get a
+# copy of their assignments.
+#
+# The user supplies their class and assignment identifiers and the class
+# version of the assignment repo is forcibly cloned into their version.
+
+die() { echo "$@" >&2; exit 1; }
+usage() { echo 'Usage: ssh git@host begin <class> <assignment>'; exit 1; }
+[ -z "$1" ] && usage
+[ "$1" = "-h" ] && usage
+[ -z "$GL_USER" ] && die GL_USER not set
+
+class=$1; shift
+assn=$1; shift
+[ -z "$assn" ] && usage
+
+from="$class"/"$assn"
+to="$class"/"$GL_USER"/"$assn"
+
+gitolite access -q "$from" "$GL_USER" R any || die "'$from' does not exist or you are not allowed to read it"
+if [ -d $GL_REPO_BASE/$to.git ]; then
+    gitolite access -q "$to" "$GL_USER" W any || die "you do not have write access to '$repo'"
+    rm -rf $GL_REPO_BASE/$to.git
+    echo "deleted $to" >&2
+fi
+gitolite access -q "$to" "$GL_USER" ^C any || die "'$to' does not exist or you are not allowed to read it"
+
+git clone --bare -l $GL_REPO_BASE/$from.git $GL_REPO_BASE/$to.git
+[ $? -ne 0 ] && exit 1
+
+echo "$from forked to $to" >&2
+
+cd $GL_REPO_BASE/$to.git
+echo $GL_USER > gl-creator
+
+gitolite query-rc -q LOCAL_CODE && ln -sf `gitolite query-rc LOCAL_CODE`/hooks/common/* hooks
+ln -sf `gitolite query-rc GL_ADMIN_BASE`/hooks/common/* hooks
+
+echo "$from" > gl-forked-from
+
+gitolite trigger POST_CREATE $to $GL_USER fork
