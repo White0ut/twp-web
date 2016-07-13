@@ -47,6 +47,8 @@ To add a user account edit the `config.py` with a new user entry.
 ## TODO:
 - [x] Simple auth for sensitive data.
 - [x] List active repositories.
+- [ ] Sweep private keys from emails.
+- [ ] Download student scripts.
 - [ ] List archived courses.
 - [ ] Download a students' work for a course.
 - [ ] Archive a course.
