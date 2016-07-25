@@ -18,7 +18,7 @@ from email.mime.text import MIMEText
 # twp-client.py
 #
 # author: Kendrick Cline
-#         kendrick.d.cline@wmich.edu
+#         kdecline@gmail.com
 #         01/26/2016
 #
 # This script serves to be a hands free client
