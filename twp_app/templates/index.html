@@ -14,6 +14,18 @@
     </form>
   -->
 
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="sync-username">Email</label>
+        <input type="email" class="form-control" id="sync-username" placeholder="trenarycs223@gmail.com">
+      </div>
+      <div class="form-group">
+        <label for="sync-password">Password</label>
+        <input type="password" class="form-control" id="sync-password">
+      </div>
+      <button type="button" id="sync-pub-btn" class="btn btn-primary twp-btn">Sync Pub Keys</button>
+    </form>
+
     <!-- repositories -->
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -80,4 +92,6 @@
   {% else %}
     <h4>You must be logged in to use this app</br>Please log in</h4>
   {% endif %}
+
+  <a href="/download/twp-client.py" class="btn btn-primary twp-btn" download>Download TWP Client</>
 {% endblock %}

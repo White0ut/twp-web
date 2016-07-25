@@ -1,9 +1,11 @@
 import os
 from flask import Blueprint, request, render_template, \
 flash, g, session, redirect, url_for, jsonify, send_file, abort
-from twp_app import app, service
+from twp_app import app, service, emails
+import subprocess
 
 twp_service = service.TwpService()
+email_service = emails.EmailService()
 
 @app.route('/')
 def index():
@@ -16,7 +18,13 @@ def index():
 def download(filename):
   if '..' in filename or filename.startswith('/'):
     abort(404)
-  return send_file(os.path.join(app.config['TWP_BAKUPS'], filename))
+  print app.config['BASE_DIR']
+  return send_file(os.path.join(app.config['BASE_DIR'], 'downloadable/', filename))
+
+@app.route('/sync-pubs', methods=['POST'])
+def sync_pubs():
+  email_service.scrape_email(request.form['username'], request.form['password'])
+  return ('', 204)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

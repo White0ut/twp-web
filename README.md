@@ -52,17 +52,21 @@ To deactivate the environment, give the following command:
 This runs the server on port `5000`.
 To add a user account edit the `config.py` with a new user entry.
 
+**Creating Downloadable Content**
+To include a file and have it downloadable under `/download` in the server simply add it to the `downloadable/`
+directory in the project and it will be available.
 
 ## TODO:
 - [x] Simple auth for sensitive data.
 - [x] List active repositories.
-- [ ] Sweep private keys from emails.
-- [ ] Download student scripts.
+- [x] Sweep private keys from emails.
+- [x] Download student scripts.
 - [ ] List archived courses.
 - [ ] Download a students' work for a course.
 - [ ] Archive a course.
 - [ ] Begin a course.
-- [ ] Display an assignment as graded if a file matching \Graded*.pdf\ exists in the repo.
+- [ ] Begin an assignment.
+- [ ] Display an assignment as graded if a file matching \Graded.pdf\ exists in the repo.
 - [ ] Check the environment to ensure that repositories, bakups, etc. are in their expected directories.
 - [ ] OAuth
 
