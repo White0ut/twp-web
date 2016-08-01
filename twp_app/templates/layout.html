@@ -36,7 +36,7 @@
 </div>
 
 <!-- prefix page with a flash component -->
-<div class=page>
+<div id="page-container" class=page>
   {% for message in get_flashed_messages() %}
     <div class="well well-sm">{{ message }}</div>
   {% endfor %}

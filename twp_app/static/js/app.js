@@ -12,16 +12,21 @@ $(document).ready(function() {
       $.post("/sync-pubs",
         sendData)
         .done(function(msg){ 
-          alert('successfully added pub keys');
-          canSync = true;
+          flash('Successfully synced users');
          })
         .fail(function(xhr, status, error) {
+          flash('Failed to sync users ' + error);
+        }).always(function() {
           canSync = true;
         });
+
     } else {
       alert("Please wait to sync");
     }
   }); 
 
+  flash = function(msg) {
+    $("#page-container").prepend('<div class="well well-sm">'+msg+'</div>').fadeIn('slow');
+  }
 
 });
