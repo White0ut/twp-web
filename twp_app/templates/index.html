@@ -26,67 +26,131 @@
       <button type="button" id="sync-pub-btn" class="btn btn-primary twp-btn">Sync Pub Keys</button>
     </form>
 
-    <!-- repositories -->
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">Courses</h4>
-      </div>
+    <div class = "col-md-6">
 
-      {% for course, attr in repos.iteritems() %}
-        <div class="panel-heading">
-          <h5 class="panel-title">
-            <a data-toggle="collapse" href="#collapse-{{course}}">{{ course }}</a>
-          </h5>
-        </div>
-        <div id="collapse-{{course}}" class="panel-collapse collapse">
-          
-          <!-- Assignments -->
-         <div class="assignment-container container-fluid">
-            <div class="row">
-            {% for assignment in attr.assignments  %}
-              <div class="col-xs-1 assignment">{{ assignment }}</div>
-            {% endfor %}
-            </div>
-          </div>
-
-          <!-- Students -->
-          <div class="panel-heading">
-            <h6 class="panel-title">
-              <a data-toggle="collapse" href="#collapse-{{ course }}-students">Students</a>
-            </h6>
-          </div>
-          <div id="collapse-{{ course }}-students" class="panel-collapse collapse">
-            <ul class="list-group">
-            {% for student in attr.students %}
-              <li class="list-group-item borderless">{{ student.replace('.', ' ').title() }}</li>
-            {% else %}
-              <li class="list-group-item borderless">None</li>
-            {% endfor %}
-            </ul>
-          </div>
-
-        </div>
-      {% endfor %}
-
-    </div>
-
-    <!-- display bakups -->
-    <div class="panel-group">
+      <!-- repositories -->
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#collapse-arch">Archives</a>
-          </h4>
+          <h4 class="panel-title">Courses</h4>
         </div>
-        <div id="collapse-arch" class="panel-collapse collapse">
-          <ul class="list-group">
-          {% for ts, component in bakups.iteritems() %}
-            <li class="list-group-item">{{ ts }}</li>
-          {% endfor %}
-          </ul>
-          <!-- <div class="panel-footer">Footer</div> -->
+
+        {% for course, attr in repos.iteritems() %}
+          <div class="panel-heading">
+            <h5 class="panel-title">
+              <a data-toggle="collapse" href="#collapse-{{course}}">{{ course }}</a>
+            </h5>
+          </div>
+          <div id="collapse-{{course}}" class="panel-collapse collapse">
+
+            <!-- Assignments -->
+           <div class="assignment-container container-fluid">
+              <div class="row">
+              {% for assignment in attr.assignments  %}
+                <div class="col-xs-1 assignment">{{ assignment }}</div>
+              {% endfor %}
+              </div>
+            </div>
+
+            <!-- Students -->
+            <div class="panel-heading">
+              <h6 class="panel-title">
+                <a data-toggle="collapse" href="#collapse-{{ course }}-students">Students</a>
+              </h6>
+            </div>
+            <div id="collapse-{{ course }}-students" class="panel-collapse collapse">
+              <ul class="list-group">
+              {% for student in attr.students %}
+                <li class="list-group-item borderless">{{ student.replace('.', ' ').title() }}</li>
+              {% else %}
+                <li class="list-group-item borderless">None</li>
+              {% endfor %}
+              </ul>
+            </div>
+
+          </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- display bakups -->
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse-arch">Archives</a>
+            </h4>
+          </div>
+          <div id="collapse-arch" class="panel-collapse collapse">
+            <ul class="list-group">
+            {% for ts, component in bakups.iteritems() %}
+              <li class="list-group-item">{{ ts }}</li>
+            {% endfor %}
+            </ul>
+            <!-- <div class="panel-footer">Footer</div> -->
+          </div>
         </div>
       </div>
+
+    </div>
+    <div class = "col-md-6">
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse-profs">Prof's</a>
+            </h4>
+          </div>
+          <div id="collapse-profs" class="panel-collapse collapse">
+            <ul class="list-group">
+            {% for prof in conf['groups']['PROFs'] %}
+              <li class="list-group-item">{{ prof }}</li>
+            {% endfor %}
+            </ul>
+            <!-- <div class="panel-footer">Footer</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse-tas">TA's</a>
+            </h4>
+          </div>
+          <div id="collapse-tas" class="panel-collapse collapse">
+            <ul class="list-group">
+            {% for ta in conf['groups']['TAs'] %}
+              <li class="list-group-item">{{ ta }}</li>
+            {% endfor %}
+            </ul>
+            <!-- <div class="panel-footer">Footer</div> -->
+          </div>
+        </div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Course</th>
+            <th>Assignment</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course, assn in conf['repos'].iteritems() %}
+            {% for assn_val, status in assn.iteritems() %}
+              <tr>
+                <td>{{ course }}</td>
+                <td>{{ assn_val }}</td>
+                <td><a id="{{ course }}-{{ assn_val }}-status" onClick="updateStatus('{{course}}', '{{assn_val}}', '{{status}}')">{{ status }}</a></td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+
     </div>
 
   {% else %}

@@ -25,8 +25,24 @@ $(document).ready(function() {
     }
   }); 
 
-  flash = function(msg) {
-    $("#page-container").prepend('<div class="well well-sm">'+msg+'</div>').fadeIn('slow');
-  }
-
 });
+
+function updateStatus(course, assn, stat) {
+  var newStat = stat === 'open' ? 'close' : 'open';
+  $.post("/api/conf/update_status",
+    {
+      "course" : course,
+      "assignment" : assn,
+      "status" : newStat
+    })
+    .done(function(msg) {
+      $('#'+course+'-'+assn+'-status').html(newStat);
+    })
+    .fail(function(xhr, status, error) {
+      flash('Failed to update assignment');
+    });
+}
+
+var flash = function(msg) {
+  $("#page-container").prepend('<div class="well well-sm">'+msg+'</div>').fadeIn('slow');
+}
