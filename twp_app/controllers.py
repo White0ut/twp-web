@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, request, render_template, \
 flash, g, session, redirect, url_for, jsonify, send_file, abort
-from twp_app import app, service, emails
+from twp_app import app, service, emails, config_parser
 import subprocess
 
 twp_service = service.TwpService()
@@ -11,7 +11,8 @@ email_service = emails.EmailService()
 def index():
   bakups = twp_service.get_bakups()
   repos = twp_service.get_repositories()
-  return render_template('index.html', bakups = bakups, repos = repos)
+  conf = config_parser.ConfigParser().get_conf()
+  return render_template('index.html', bakups = bakups, repos = repos, conf = conf)
 
 @app.route('/download', defaults={'filename', ''})
 @app.route('/download/<path:filename>')
@@ -24,6 +25,18 @@ def download(filename):
 @app.route('/sync-pubs', methods=['POST'])
 def sync_pubs():
   email_service.scrape_email(request.form['username'], request.form['password'])
+  return ('', 204)
+
+@app.route('/api/conf/update_status', methods=['POST'])
+def update_status():
+  course = request.form['course']
+  assignment = request.form['assignment']
+  status = request.form['status']
+  opened = True if status == 'open' else False
+
+  parser = config_parser.ConfigParser()
+  parser.update_assignment(course, assignment, opened)
+  parser.dump()
   return ('', 204)
 
 @app.route('/login', methods=['GET', 'POST'])
