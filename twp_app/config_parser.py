@@ -1,12 +1,12 @@
+from twp_app import app
 import yaml
 
 class ConfigParser:
 
-  def __init__(self, config_file):
+  def __init__(self, config_file = app.config['CONFIG_YAML']):
     # The dict keys in the gitolite yaml config
     self.REPOS_KEY = 'repos'
     self.GROUPS_KEY = 'groups'
-    self.INCLUDES_KEY = 'includes'
 
     # open and load the config_file
     print 'Loading {0} ...'.format(config_file)
@@ -20,10 +20,11 @@ class ConfigParser:
       self.conf[self.REPOS_KEY] = {}
     if not self.conf.has_key(self.GROUPS_KEY):
       self.conf[self.GROUPS_KEY] = {}
-    if not self.conf.has_key(self.INCLUDES_KEY):
-      self.conf[self.INCLUDES_KEY] = {}
 
     self.repos = self.conf[self.REPOS_KEY]
+
+  def get_conf(self):
+    return self.conf
 
   # removes an assignment from a course
   def remove_assignment(self, course, assignment):
@@ -49,7 +50,7 @@ class ConfigParser:
 
   # update assignment
   def update_assignment(self, course, assignment, opened):
-    self.repos[course][assignment] = 'opened' if opened else 'closed'
+    self.repos[course][assignment] = 'open' if opened else 'close'
 
   # add a TA
   def add_ta(self, name):
@@ -62,7 +63,7 @@ class ConfigParser:
   #
   # dumps the config file to file
   #
-  def dump(self, file_name, overwrite_yaml = True):
+  def dump(self, file_name = app.config['CONFIG_FILE'], overwrite_yaml = True):
     print 'Dumping {0} to {1}'.format(self.conf, file_name)
     f = open(file_name, 'w')
 
