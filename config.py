@@ -14,6 +14,8 @@ TWP_HOME = os.path.abspath('..')
 TWP_BAKUPS = os.path.join(TWP_HOME, 'bak')
 TWP_REPOS = os.path.join(TWP_HOME, 'repositories')
 TWP_GITOLITE = os.path.join(TWP_HOME, 'gitolite-admin')
+CONFIG_FILE = os.path.join(TWP_GITOLITE, 'conf/gitolite.conf')
+CONFIG_YAML = os.path.join(TWP_GITOLITE, 'conf/gitolite.yaml')
 
 THREADS_PER_PAGE = 2
 
