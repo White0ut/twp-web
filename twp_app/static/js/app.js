@@ -28,7 +28,10 @@ $(document).ready(function() {
 });
 
 function updateStatus(course, assn, stat) {
-  var newStat = stat === 'open' ? 'close' : 'open';
+  var id = '#'+course+'-'+assn+'-status';
+  var newStat = $(id).html() === 'open' ? 'close' : 'open';
+  console.log('setting to: ' + newStat);
+
   $.post("/api/conf/update_status",
     {
       "course" : course,
@@ -36,10 +39,10 @@ function updateStatus(course, assn, stat) {
       "status" : newStat
     })
     .done(function(msg) {
-      $('#'+course+'-'+assn+'-status').html(newStat);
+      $(id).html(newStat);
     })
     .fail(function(xhr, status, error) {
-      flash('Failed to update assignment');
+      flash('Failed to update assignment.');
     });
 }
 
