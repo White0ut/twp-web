@@ -15,7 +15,7 @@ from twp_app import app
 class EmailService():
 
   def __init__(self):
-    self.CONFNAME = os.path.join(app.config['TWP_HOME'], 'gitolite-admin/', 'conf/')
+    self.CONFNAME = os.path.join(app.config['TWP_GITOLITE'], 'conf/')
 
   def scrape_email(self, userName, passwd):
     studentsLine = []
@@ -109,7 +109,7 @@ class EmailService():
     
             #write the file
             print "[{}]: mv {} -> keydir/{}".format(emailName,fileName,emailName+'.pub')
-            keydir = os.path.join(app.config['TWP_HOME'], 'gitolite-admin/', 'keydir/', emailName+'.pub')
+            keydir = os.path.join(app.config['TWP_GITOLITE'], 'keydir/', emailName+'.pub')
             fp = open(keydir, 'wb')
     
     
