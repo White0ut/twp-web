@@ -1,4 +1,6 @@
 from twp_app import app
+import subprocess
+import os
 import yaml
 
 class ConfigParser:
@@ -104,6 +106,8 @@ class ConfigParser:
 
     if overwrite_yaml:
       self._dump_yaml()
+
+    subprocess.Popen([os.path.join(app.config['TWP_GITOLITE'], 'update.sh')], cwd=app.config['TWP_GITOLITE'])
 
   # Dumps the contents of the config back to the yaml file.
   # Updating any modifications
