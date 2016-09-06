@@ -55,6 +55,9 @@ class TwpService():
 
   def get_bakups(self):
     bakups = {}
+    if not os.path.isdir(app.config['TWP_BAKUPS']):
+      return bakups
+
     for root, dirs, files, depth in self._walklevel(app.config['TWP_BAKUPS'], level=3):
       if depth is 0 or depth is 1:
         for d in dirs:
