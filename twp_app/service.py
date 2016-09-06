@@ -62,7 +62,6 @@ class TwpService():
       else:
         for f in files:
           bakups[f] = []
-    print bakups
     return bakups
 
   def archive_course(self, course):
