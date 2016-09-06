@@ -130,26 +130,47 @@
         </div>
       </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Course</th>
-            <th>Assignment</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for course, assn in conf['repos'].iteritems() %}
-            {% for assn_val, status in assn.iteritems() %}
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Manage Assignments
+            </h4>
+          </div>
+          <table class="table">
+            <thead>
               <tr>
-                <td>{{ course }}</td>
-                <td>{{ assn_val }}</td>
-                <td><a id="{{ course }}-{{ assn_val }}-status" onClick="updateStatus('{{course}}', '{{assn_val}}')">{{ status }}</a></td>
+                <th>Course</th>
+                <th>Assignment</th>
+                <th>Status</th>
               </tr>
-            {% endfor %}
-          {% endfor %}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {% for course, assn in conf['repos'].iteritems() %}
+                {% for assn_val, status in assn.iteritems() %}
+                  <tr>
+                    <td>{{ course }}</td>
+                    <td>{{ assn_val }}</td>
+                    <td><a id="{{ course }}-{{ assn_val }}-status" onClick="updateStatus('{{course}}', '{{assn_val}}')">{{ status }}</a></td>
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <form class="form-inline" style="padding-left: 1%;">
+            <div class="form-group">
+              <label for="add-course">Course</label>
+              <input type="text" class="form-control" id="add-course" placeholder="2230">
+            </div>
+            <div class="form-group">
+              <label for="add-assignment">Assignment</label>
+              <input type="text" class="form-control" id="add-assignment" placeholder="a0">
+            </div>
+            <button type="button" id="add-assignment-btn" class="btn btn-primary twp-btn">Create Assignment</button>
+          </form>
+        </div>
+      </div>
 
     </div>
 
