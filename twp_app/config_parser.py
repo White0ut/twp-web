@@ -125,7 +125,7 @@ class ConfigParser:
     f.write('\
 repo {course}/{assignment}\n\
   C       =   @PROFs @TAs\n\
-  RW+     =   @PROFS @TAs\n\
+  RW+     =   @PROFs @TAs\n\
   R       =   @{course}\n\n'.format(course = course, assignment = assignment))
 
   def _write_open(self, f, course, assignment):
