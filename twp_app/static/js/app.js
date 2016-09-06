@@ -53,7 +53,7 @@ $(document).ready(function () {
         );
       })
       .fail(function (xhr, status, error) {
-        flash('Failed to add assignment');
+        flash('Failed to add assignment.');
       });
 
     $('#add-course').val('');
@@ -66,6 +66,17 @@ $(document).ready(function () {
   $('#add-ta-btn').click(function () {
     var ta = $('#add-ta').val();
 
+    $.post('/api/conf/ta',
+      {
+        "ta": ta
+      })
+      .done(function (msg) {
+        $('#collapse-tas ul').append('<li class="list-group-item">' + ta + '</li>');
+      })
+      .fail(function (xhr, status, error) {
+        flash('Failed to add TA.');
+      });
+
     console.log('ta: ' + ta);
     $('#add-ta').val('');
   });
@@ -76,11 +87,23 @@ $(document).ready(function () {
   $('#add-prof-btn').click(function () {
     var prof = $('#add-prof').val();
 
+    $.post('/api/conf/prof',
+      {
+        "prof": prof
+      })
+      .done(function (msg) {
+        $('#collapse-profs ul').append('<li class="list-group-item">' + prof + '</li>');
+      })
+      .fail(function (xhr, status, error) {
+        flash('Failed to add Professor.');
+      });
+
     console.log('prof: ' + prof);
     $('#add-prof').val('');
   });
 
 });
+// End document.ready
 
 function updateStatus(course, assn, stat) {
   var id = '#' + course + '-' + assn + '-status';

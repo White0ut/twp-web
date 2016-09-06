@@ -35,6 +35,8 @@ class ConfigParser:
 
   # creates an assignment from a course
   def create_assignment(self, course, assignment, opened = True):
+    course = str(course)
+    assignment = str(assignment)
     self.create_course(course)
     self.repos[course][assignment] = 'open' if opened else 'closed'
 
@@ -56,11 +58,21 @@ class ConfigParser:
 
   # add a TA
   def add_ta(self, name):
+    name = str(name)
     if not self.conf[self.GROUPS_KEY].has_key('TAs'):
       self.conf[self.GROUPS_KEY]['TAs'] = []
     tas = self.conf[self.GROUPS_KEY]['TAs']
     if not tas.__contains__(name):
       tas.append(name)
+
+  # add a PROF
+  def add_prof(self, name):
+    name = str(name)
+    if not self.conf[self.GROUPS_KEY].has_key('PROFs'):
+      self.conf[self.GROUPS_KEY]['PROFs'] = []
+    profs = self.conf[self.GROUPS_KEY]['PROFs']
+    if not profs.__contains__(name):
+      profs.append(name)
 
   #
   # dumps the config file to file

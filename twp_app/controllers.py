@@ -64,10 +64,20 @@ def create_assignment():
 
 @app.route('/api/conf/ta', methods=['POST'])
 def create_ta():
+  ta = request.form['ta']
+
+  parser = config_parser.ConfigParser()
+  parser.add_ta(ta)
+  parser.dump()
   return ('', 204)
 
 @app.route('/api/conf/prof', methods=['POST'])
 def create_prof():
+  prof = request.form['prof']
+
+  parser = config_parser.ConfigParser()
+  parser.add_prof(prof)
+  parser.dump()
   return ('', 204)
 
 #
