@@ -4,7 +4,8 @@ ACCOUNTS = {
 	'kendrick': 'cline',
 	'scott': 'linder',
 	'chris': 'sphinx',
-  'robert': 'trenary'
+  'robert': 'trenary',
+  'bob': 'hardin'
 }
 
 import os
