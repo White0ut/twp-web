@@ -82,3 +82,5 @@ venv/
 ENV/
 
 .email_passwords.txt
+
+gitolite-admin/
