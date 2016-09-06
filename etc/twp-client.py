@@ -107,7 +107,8 @@ if not os.path.isfile(rsa_key_path) and \
         not os.path.isfile(rsa_pub_key_path):
     debug('default RSA Key does not exist, creating one at {0}'.format(rsa_key_path))
     debug('running command {0}'.format(ssh_keygen_cmd))
-    subprocess.Popen(ssh_keygen_cmd, shell=True)
+    p = subprocess.Popen(ssh_keygen_cmd, shell=True)
+    p.wait()
 
 #####
 # Create the message mime-type and attach the RSA Key to it
