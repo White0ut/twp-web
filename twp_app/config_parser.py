@@ -83,6 +83,9 @@ class ConfigParser:
       f.write('include "{course}.conf"\n'.format(course=course))
     f.write('\n')
     
+    f.write('repo gitolite-admin\n')
+    f.write('  RW+     =   gitolite-admin @PROFs @TAs\n\n')
+    
     for _course in self.repos.iterkeys():
       for _assignment in self.repos[_course].iterkeys():
         assignment = str(_assignment)
