@@ -14,6 +14,10 @@ def index():
   conf = config_parser.ConfigParser().get_conf()
   return render_template('index.html', bakups = bakups, repos = repos, conf = conf)
 
+#
+# download
+# This endpoint exposes the files in the downloadable/ directory.
+#
 @app.route('/download', defaults={'filename', ''})
 @app.route('/download/<path:filename>')
 def download(filename):
@@ -22,11 +26,20 @@ def download(filename):
   print app.config['BASE_DIR']
   return send_file(os.path.join(app.config['BASE_DIR'], 'downloadable/', filename))
 
+#
+# sync_pubs
+# This endpoint accepts credentials to the email service to scrape user keys
+# sent via email.
+#
 @app.route('/sync-pubs', methods=['POST'])
 def sync_pubs():
   email_service.scrape_email(request.form['username'], request.form['password'])
   return ('', 204)
 
+#
+# Update config options
+# These routes expose API's to update config entries
+#
 @app.route('/api/conf/update_status', methods=['POST'])
 def update_status():
   course = request.form['course']
@@ -39,6 +52,27 @@ def update_status():
   parser.dump()
   return ('', 204)
 
+@app.route('/api/conf/assignment', methods=['POST'])
+def create_assignment():
+  course = request.form['course']
+  assignment = request.form['assignment']
+
+  parser = config_parser.ConfigParser()
+  parser.create_assignment(course, assignment)
+  parser.dump()
+  return ('', 204)
+
+@app.route('/api/conf/ta', methods=['POST'])
+def create_ta():
+  return ('', 204)
+
+@app.route('/api/conf/prof', methods=['POST'])
+def create_prof():
+  return ('', 204)
+
+#
+# Login and logout routes
+#
 @app.route('/login', methods=['GET', 'POST'])
 def login():
   error = None

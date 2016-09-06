@@ -34,9 +34,9 @@ class ConfigParser:
       self.repos[course].pop(assignment)
 
   # creates an assignment from a course
-  def create_assignment(self, course, assignment, opened = False):
+  def create_assignment(self, course, assignment, opened = True):
     self.create_course(course)
-    self.repos[course][assignment] = 'opened' if opened else 'closed'
+    self.repos[course][assignment] = 'open' if opened else 'closed'
 
   # removes a course
   def remove_course(self, course):
