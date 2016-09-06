@@ -6,6 +6,7 @@ import json
 import traceback
 import os
 import sys
+import subprocess
 from twp_app import app
 
 
@@ -50,7 +51,6 @@ class EmailService():
         print 'Not able to sign in!'
         raise
     
-      classConf = open(confname,"w+")
       #print out all the gmail boxes
       #print json.dumps(imapSession.list(),indent=4)
     
@@ -121,14 +121,25 @@ class EmailService():
     
             fp.write(part.get_payload(decode=True))
             fp.close()
-    
+
+      self._prep_repo()
       #get uniq
+      classConf = open(confname,"w+")
+
       studentsLine = list(set(studentsLine))
       classConf.write(classNum+" ".join(studentsLine)+"\n")
       classConf.close()
-    
+
+      self._push_repo()
+
       imapSession.close()
       imapSession.logout()
     except Exception as e:
       raise e
 
+  def _prep_repo(self):
+    p = subprocess.Popen(['git', 'rebase', 'origin', 'master'], cwd=app.config['TWP_GITOLITE'])
+    p.wait()
+
+  def _push_repo(self):
+    subprocess.call([os.path.join(app.config['TWP_GITOLITE'], 'update.sh')], cwd=app.config['TWP_GITOLITE'])
