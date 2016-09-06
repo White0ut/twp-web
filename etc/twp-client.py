@@ -43,7 +43,7 @@ class_emails = {
     'a' : 'trenarycs223@gmail.com',
     'b' : 'trenarycs224@gmail.com'
 }
-rsa_key_path = os.path.expanduser('~/.ssh/is_rsa')
+rsa_key_path = os.path.expanduser('~/.ssh/id_rsa')
 rsa_pub_key_path = os.path.expanduser('~/.ssh/id_rsa.pub')
 ssh_keygen_cmd = "ssh-keygen -b 2048 -t rsa -f {0} -q -N \"\"".format(rsa_key_path)
 
@@ -124,15 +124,10 @@ if ctype is None or encoding is not None:
 maintype, subtype = ctype.split("/", 1)
 
 # check for pub file type
-if ctype == 'application/x-mspublisher':
-    debug('file is valid type: application/x-mspublisher')
-    fp = open(rsa_pub_key_path)
-    # Note: we should handle calculating the charset
-    attachment = MIMEText(fp.read(), _subtype=subtype)
-    fp.close()
-else:
-    print 'invalid file type [{0}] for id_rsa.pub'.format(ctype)
-    exit(1)
+fp = open(rsa_pub_key_path)
+# Note: we should handle calculating the charset
+attachment = MIMEText(fp.read(), _subtype=subtype)
+fp.close()
 
 attachment.add_header('Content-Disposition', 'attachment', filename='id_rsa.pub')
 msg.attach(attachment)
