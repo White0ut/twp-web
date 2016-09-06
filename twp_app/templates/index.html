@@ -98,7 +98,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" href="#collapse-profs">Profs</a>
+              <a data-toggle="collapse" href="#collapse-profs">Professors</a>
             </h4>
           </div>
           <div id="collapse-profs" class="panel-collapse collapse">
@@ -107,7 +107,14 @@
               <li class="list-group-item">{{ prof }}</li>
             {% endfor %}
             </ul>
-            <!-- <div class="panel-footer">Footer</div> -->
+            <div class="panel-footer">
+              <form class="form-inline">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="add-prof" placeholder="trenary">
+                </div>
+                <button type="button" id="add-prof-btn" class="btn btn-primary twp-btn">Add Professor</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -125,7 +132,14 @@
               <li class="list-group-item">{{ ta }}</li>
             {% endfor %}
             </ul>
-            <!-- <div class="panel-footer">Footer</div> -->
+            <div class="panel-footer">
+              <form class="form-inline">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="add-ta" placeholder="colin">
+                </div>
+                <button type="button" id="add-ta-btn" class="btn btn-primary twp-btn">Add TA</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -158,17 +172,19 @@
             </tbody>
           </table>
 
-          <form class="form-inline" style="padding-left: 1%;">
-            <div class="form-group">
-              <label for="add-course">Course</label>
-              <input type="text" class="form-control" id="add-course" placeholder="2230">
-            </div>
-            <div class="form-group">
-              <label for="add-assignment">Assignment</label>
-              <input type="text" class="form-control" id="add-assignment" placeholder="a0">
-            </div>
-            <button type="button" id="add-assignment-btn" class="btn btn-primary twp-btn">Create Assignment</button>
-          </form>
+          <div class="panel-footer">
+            <form class="form-inline" style="padding-left: 1%;">
+              <div class="form-group">
+                <label for="add-course">Course</label>
+                <input type="text" class="form-control" id="add-course" placeholder="2230">
+              </div>
+              <div class="form-group">
+                <label for="add-assignment">Assignment</label>
+                <input type="text" class="form-control" id="add-assignment" placeholder="a0">
+              </div>
+              <button type="button" id="add-assignment-btn" class="btn btn-primary twp-btn">Create Assignment</button>
+            </form>
+          </div>
         </div>
       </div>
 
