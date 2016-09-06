@@ -138,6 +138,8 @@ class EmailService():
       raise e
 
   def _prep_repo(self):
+    p = subprocess.Popen(['git', 'fetch', '-a'], cwd=app.config['TWP_GITOLITE'])
+    p.wait()
     p = subprocess.Popen(['git', 'rebase', 'origin', 'master'], cwd=app.config['TWP_GITOLITE'])
     p.wait()
 
