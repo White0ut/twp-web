@@ -187,7 +187,24 @@
 </div>
 
 {% else %}
-<h4>You must be logged in to use this app</br>Please log in</h4>
-{% endif %}
 
-<a href="/download/twp-client.py" class="btn btn-primary twp-btn" download>Download TWP Client</a> {% endblock %}
+<h4>
+  You must be logged in to use this app
+  </br>
+  Please log in
+</h4>
+</br>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      Student Resources
+    </h4>
+  </div>
+  <div class="panel-body">
+    <a href="/download/twp-client.py" class="btn btn-primary twp-btn" download>Download TWP Client</a>
+  </div>
+</div>
+
+
+{% endif %} {% endblock %}
